@@ -119,6 +119,10 @@
           }
         }
       }
-    }},
-  "defaultProject": "observable-start"
+    }
+  },
+  "defaultProject": "observable-start",
+  "cli": {
+    "analytics": "83f86a6e-84b3-4b6e-9ed5-a97171bbedfe"
+  }
 }
