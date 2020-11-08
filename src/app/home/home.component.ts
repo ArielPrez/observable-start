@@ -9,24 +9,32 @@ import { interval, Subscription, Observable } from 'rxjs';
 export class HomeComponent implements OnInit, OnDestroy {
 
   private firstObsSubs: Subscription;
+  count = 5;
   constructor() { }
 
   ngOnInit() {
     // this.firstObsSubs = interval(1000).subscribe(count => {
     //     console.log(count);
     //   });
-    const customIntervalObservable = Observable.create(
+    const customIntervalObservable = new Observable(
       (observer) => {
-        let count = 0;
         setInterval(() => {
-          observer.next(count);
-          count++;
+          observer.next(this.count);
+          if ( this.count < 1 ){
+            observer.error(new Error('The count is now ' + this.count + '! / Session logged off.'));
+          }
+          this.count--;
         }, 1000);
       }
     );
     this.firstObsSubs = customIntervalObservable.subscribe(data => {
       console.log(data);
-    });
+    }, error => {
+      console.log(error.message);
+      alert(error.message);
+      this.count = 5;
+    }
+    );
   }
 
   // To destroy an observable it's necessary to store the subscription
