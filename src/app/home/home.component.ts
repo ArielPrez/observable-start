@@ -20,20 +20,25 @@ export class HomeComponent implements OnInit, OnDestroy {
       (observer) => {
         setInterval(() => {
           observer.next(this.count);
-          if ( this.count < 1 ){
+          if (this.count === 1) {
+            observer.complete();
+          }else if ( this.count < 1 ){
             observer.error(new Error('The count is now ' + this.count + '! / Session logged off.'));
+          }else{
+            this.count--;
           }
-          this.count--;
         }, 1000);
       }
     );
     this.firstObsSubs = customIntervalObservable.subscribe(data => {
       console.log(data);
-    }, error => {
-      console.log(error.message);
-      alert(error.message);
-      this.count = 5;
-    }
+      }, error => {
+        console.log(error.message);
+        alert(error.message);
+        this.count = 5;
+      }, () => {
+        console.log('Completed!');
+      }
     );
   }
 
